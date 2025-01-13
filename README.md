@@ -106,5 +106,12 @@ Export the trained model as a pickle file.
 Final Output:
 The trained machine learning model will be saved as a pickle file, ready for deployment or further analysis.
 The process ensures the model is tuned for optimal performance and can classify disaster messages into the appropriate categories based on the input.
+**
+Description**
+This project is part of the Data Science Nanodegree Program by Udacity, in collaboration with Figure Eight. The dataset includes pre-labeled tweets and messages from real-life disaster events. The goal of this project is to develop a Natural Language Processing (NLP) model that can categorize messages in real-time.
+The project is divided into the following key sections:
+1. Data Processing: An ETL pipeline to extract data, clean it, and save it in a SQLite database.
+2. Machine Learning Pipeline: Building and training a machine learning model to classify text messages into various categories.
+3. Web Application: Running a web app to display real-time classification results.
 
 
