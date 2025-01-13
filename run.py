@@ -41,90 +41,128 @@ except FileNotFoundError as e:
     model = None
 
 
-# index webpage displays cool visuals and receives user input text for model
+# Index webpage displays visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
-    
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    if df is not None and 'related' in df.columns and 'genre' in df.columns:
-        genre_related = df[df['related']==1].groupby('genre').count()['message']
-        genre_not_related = df[df['related']==0].groupby('genre').count()['message']
+    # Extract data needed for visuals
+    if not df.empty and all(col in df.columns for col in ['related', 'genre', 'message']):
+        genre_related = df[df['related'] == 1].groupby('genre').count()['message']
+        genre_not_related = df[df['related'] == 0].groupby('genre').count()['message']
+        genre_names = list(genre_related.index)
     else:
-        genre_related = genre_not_related = genre_counts = []
-        genre_names = []
-    genre_names = list(genre_counts.index)
-    
-    # create visuals
-    # TODO: Below is an example - modify to create your own visuals
-    cat_prop = df.drop(['id', 'message', 'original', 'genre'], axis = 1).sum()/len(df)
-    cat_prop = cat_prop.sort_values(ascending = False)
-    cat_names = list(cat_prop.index)
-    graphs = [
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_related,
-                    name = 'Genre Related'
-                ),
-                Bar(
-                    x=genre_names,
-                    y=genre_not_related,
-                    name = 'Genre Not Related'
-                )
-            ],
+        genre_related, genre_not_related, genre_names = [], [], []
 
+    # Calculate category proportions
+    if not df.empty and all(col in df.columns for col in ['id', 'message', 'original', 'genre']):
+        cat_prop = df.drop(['id', 'message', 'original', 'genre'], axis=1).sum() / len(df)
+        cat_prop = cat_prop.sort_values(ascending=False)
+        cat_names = list(cat_prop.index)
+    else:
+        cat_prop, cat_names = [], []
+
+    # Create visuals
+    graphs = []
+
+    # Graph 1: Distribution of Genres (Related vs Not Related)
+    if genre_names:
+        graph1 = {
+            'data': [
+                Bar(x=genre_names, y=genre_related, name='Genre Related'),
+                Bar(x=genre_names, y=genre_not_related, name='Genre Not Related')
+            ],
             'layout': {
-                'title': 'Distribution of Message Genres and Related ',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre "
-                },
+                'title': 'Distribution of Message Genres and Related Status',
+                'yaxis': {'title': "Count"},
+                'xaxis': {'title': "Genre"},
                 'barmode': 'group'
             }
-        },
+        }
+        graphs.append(graph1)
 
-        {
+    # Graph 2: Proportion of Messages by Category
+    if cat_names:
+        graph2 = {
             'data': [
-                Bar(
-                    x=cat_names,
-                    y=cat_prop,
-                ),
+                Bar(x=cat_names, y=cat_prop)
             ],
-
             'layout': {
                 'title': 'Proportion of Messages by Category',
-                'yaxis': {
-                    'title': "Proportion"
-                },
-                'xaxis': {
-                    'title': "Category",
-                    'tickangle': -45
-                },
-                
+                'yaxis': {'title': "Proportion"},
+                'xaxis': {'title': "Category", 'tickangle': -45},
             }
-        },
-    ]
-    
-    # encode plotly graphs in JSON
+        }
+        graphs.append(graph2)
+
+    # Graph 3: Genre Distribution (Pie Chart)
+    if not df.empty:
+        genre_counts = df['genre'].value_counts()
+        graph3 = {
+            'data': [
+                {
+                    'type': 'pie',
+                    'labels': genre_counts.index.tolist(),
+                    'values': genre_counts.values.tolist()
+                }
+            ],
+            'layout': {
+                'title': 'Genre Distribution',
+            }
+        }
+        graphs.append(graph3)
+
+    # Graph 4: Top Categories by Message Count
+    if not df.empty:
+        top_categories = df.drop(['id', 'message', 'original', 'genre'], axis=1).sum().sort_values(ascending=False).head(10)
+        graph4 = {
+            'data': [
+                Bar(
+                    x=top_categories.index.tolist(),
+                    y=top_categories.values.tolist(),
+                    orientation='h'
+                )
+            ],
+            'layout': {
+                'title': 'Top 10 Categories by Message Count',
+                'yaxis': {'title': "Category"},
+                'xaxis': {'title': "Message Count"},
+            }
+        }
+        graphs.append(graph4)
+
+    # Graph 5: Message Length Distribution (Histogram)
+    if 'message' in df.columns:
+        df['message_length'] = df['message'].str.len()
+        graph5 = {
+            'data': [
+                {
+                    'type': 'histogram',
+                    'x': df['message_length'],
+                    'nbinsx': 20,
+                }
+            ],
+            'layout': {
+                'title': 'Message Length Distribution',
+                'yaxis': {'title': "Frequency"},
+                'xaxis': {'title': "Message Length"},
+            }
+        }
+        graphs.append(graph5)
+
+    # Encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
-    
-    # render web page with plotly graphs
+
+    # Render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
-
-# web page that handles user query and displays model results
+# Web page that handles user query and displays model results
 @app.route('/go')
 def go():
-    # save user input in query
-    query = request.args.get('query', '') 
+    # Save user input in query
+    query = request.args.get('query', '')
 
-    # use model to predict classification for query
+    # Use model to predict classification for query
     if model:
         try:
             classification_labels = model.predict([query])[0]
@@ -135,7 +173,7 @@ def go():
     else:
         classification_results = {}
 
-    # This will render the go.html Please see that file. 
+    # Render the go.html page
     return render_template(
         'go.html',
         query=query,
@@ -144,7 +182,7 @@ def go():
 
 
 def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
 
 
 if __name__ == '__main__':
