@@ -42,7 +42,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sqlalchemy import create_engine
-# Download necessary NLTK data
+Download necessary NLTK data
 nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 from sklearn.datasets import make_multilabel_classification
 
