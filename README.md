@@ -1,3 +1,37 @@
+**Description****
+This project is part of the Data Science Nanodegree Program by Udacity, in collaboration with Figure Eight. T
+he dataset includes pre-labeled tweets and messages from real-life disaster events. The goal of this project is to develop a Natural Language Processing (NLP) model that can categorize messages in real-time.
+The project is divided into the following key sections:
+
+1. Data Processing: An ETL pipeline to extract data, clean it, and save it in a SQLite database.
+2. Machine Learning Pipeline: Building and training a machine learning model to classify text messages into various categories.
+3. Web Application: Running a web app to display real-time classification results.
+
+Running the Program
+1. Run the following commands in the project directory to set up the database, train the model, and save the model:
+    To run the ETL pipeline to clean the data and store the processed data in the database:
+2. bash Copy code python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/disaster_response_db.db
+    To run the ML pipeline, which loads data from the database, trains the classifier, and saves it as a pickle file:
+    
+4. bash Copy code  python models/train_classifier.py data/disaster_response_db.db models/classifier.pkl
+
+6. In the app's directory, run the following command to start the web app: bash Copy code   python run.py
+   
+8. Visit the web app at: http://0.0.0.0:3000/
+
+Additional Resources
+In the data and models folders, you will find two Jupyter notebooks that will help you understand the model step by step:
+1. ETL Preparation Notebook: Learn everything about the implemented ETL pipeline.
+2. ML Pipeline Preparation Notebook: Understand the Machine Learning pipeline developed using NLTK and Scikit-Learn.
+You can use the ML Pipeline Preparation Notebook to re-train or fine-tune the model through a dedicated grid search section.
+
+Important Files
+* app/templates/: HTML templates for the web app.
+* data/process_data.py: ETL pipeline used for data cleaning, feature extraction, and storing data in the SQLite database.
+* models/train_classifier.py: ML pipeline that loads data, trains a model, and saves the trained model as a .pkl file.
+* run.py: This file launches the Flask web app to classify disaster messages.
+
+
 **#ETL**
 
 The required libraries:
@@ -106,38 +140,7 @@ Export the trained model as a pickle file.
 Final Output:
 The trained machine learning model will be saved as a pickle file, ready for deployment or further analysis.
 The process ensures the model is tuned for optimal performance and can classify disaster messages into the appropriate categories based on the input.
-**
-Description**
-This project is part of the Data Science Nanodegree Program by Udacity, in collaboration with Figure Eight. T
-he dataset includes pre-labeled tweets and messages from real-life disaster events. The goal of this project is to develop a Natural Language Processing (NLP) model that can categorize messages in real-time.
-The project is divided into the following key sections:
 
-1. Data Processing: An ETL pipeline to extract data, clean it, and save it in a SQLite database.
-2. Machine Learning Pipeline: Building and training a machine learning model to classify text messages into various categories.
-3. Web Application: Running a web app to display real-time classification results.
 
-Running the Program
-1. Run the following commands in the project directory to set up the database, train the model, and save the model:
-    To run the ETL pipeline to clean the data and store the processed data in the database:
-2. bash Copy code python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/disaster_response_db.db
-    To run the ML pipeline, which loads data from the database, trains the classifier, and saves it as a pickle file:
-    
-4. bash Copy code  python models/train_classifier.py data/disaster_response_db.db models/classifier.pkl
-
-6. In the app's directory, run the following command to start the web app: bash Copy code   python run.py
-   
-8. Visit the web app at: http://0.0.0.0:3000/
-
-Additional Resources
-In the data and models folders, you will find two Jupyter notebooks that will help you understand the model step by step:
-1. ETL Preparation Notebook: Learn everything about the implemented ETL pipeline.
-2. ML Pipeline Preparation Notebook: Understand the Machine Learning pipeline developed using NLTK and Scikit-Learn.
-You can use the ML Pipeline Preparation Notebook to re-train or fine-tune the model through a dedicated grid search section.
-
-Important Files
-* app/templates/: HTML templates for the web app.
-* data/process_data.py: ETL pipeline used for data cleaning, feature extraction, and storing data in the SQLite database.
-* models/train_classifier.py: ML pipeline that loads data, trains a model, and saves the trained model as a .pkl file.
-* run.py: This file launches the Flask web app to classify disaster messages.
 
 
