@@ -12,11 +12,37 @@ ETL Pipeline Preparation Objective: This project aims to create an ETL (Extract,
 
 Steps:
 
-Import Libraries and Load Datasets Import the necessary Python libraries. Load messages.csv into a pandas DataFrame and inspect the first few rows. Load categories.csv into a pandas DataFrame and inspect the first few rows.
-Data Cleaning and Transformation Merge the messages and categories datasets based on the id column. Clean the categories column by splitting it into individual category columns and converting values to binary (0 or 1). Drop the original categories column and add the cleaned category columns. Remove duplicate rows from the merged dataset. Handle missing values by filling them with the most frequent value for categorical columns and with the median for numerical columns.
-Save Clean Dataset into SQLite Database Create a connection to an SQLite database using SQLAlchemy. Save the cleaned DataFrame into an SQLite database as a table named DisasterMessages.
-Create process_data.py Script Create a Python script (process_data.py) that automates the above steps: Load data from messages.csv and categories.csv. Clean the data as described above. Save the cleaned data into an SQLite database. Final Output: The cleaned data will be saved in a SQLite database (DisasterResponse.db) with the DisasterMessages table ready for further analysis or model training.
-
+1. Import Libraries and Load Datasets
+Import the necessary Python libraries:
+pandas for data manipulation.
+numpy for numerical operations.
+sqlalchemy for saving data to an SQLite database.
+Load the messages.csv file into a pandas DataFrame and inspect the first few rows using df.head().
+Load the categories.csv file into another pandas DataFrame and inspect the first few rows.
+2. Data Cleaning and Transformation
+Merge the messages and categories datasets using the id column as the key.
+Clean the categories column:
+Split the values in categories into individual category columns using the separator ;.
+Extract the category names from the first row and rename the new columns.
+Convert the values in each category column to binary (0 or 1) by extracting the last character of each string and converting it to an integer.
+Drop the original categories column from the merged dataset and add the newly created category columns.
+Remove duplicate rows from the dataset using drop_duplicates().
+Handle missing values:
+Fill missing categorical values with the most frequent value in each column.
+Fill missing numerical values with the median value of the respective columns.
+3. Save Clean Dataset into SQLite Database
+Create a connection to an SQLite database using SQLAlchemy (e.g., sqlite:///DisasterResponse.db).
+Save the cleaned DataFrame into the database as a table named DisasterMessages using the to_sql() method.
+4. Create process_data.py Script
+Write a Python script named process_data.py to automate the above steps:
+Load Data:
+Read data from messages.csv and categories.csv.
+Clean Data:
+Merge, clean, and transform the datasets as described above.
+Save Data:
+Save the cleaned DataFrame into an SQLite database named DisasterResponse.db under the DisasterMessages table.
+5. Final Output
+The output will be a cleaned dataset stored in an SQLite database (DisasterResponse.db), which includes the DisasterMessages table. This data will be ready for further analysis or model training.
 
 **# ML**
 ML Pipeline Preparation
