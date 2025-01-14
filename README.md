@@ -87,7 +87,7 @@ Load Data
 Load cleaned data from the SQLite database.
 Build the ML Pipeline
 Create a pipeline that includes data preprocessing and classification.
-Use MultiOutputClassifier for multi-category predictions.
+Use MultiOutputClassifier (AdaBoostClassifier) for multi-category predictions.
 Train and Evaluate the Model
 Split the data into training and testing sets.
 Evaluate model performance using metrics like accuracy, precision, recall, and F1-score.
