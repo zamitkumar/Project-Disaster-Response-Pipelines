@@ -26,6 +26,8 @@ def load_data(messages_filepath, categories_filepath):
 
     return df
 
+
+
 def clean_data(df):
     """Clean dataframe by removing duplicates and converting categories from strings 
     to binary values.
@@ -46,10 +48,11 @@ def clean_data(df):
         categories[column] = categories[column].astype(str).str[-1].astype(int)
         # convert column from string to numeric
         categories[column] = pd.to_numeric(categories[column])
-
+    df = df[df['strom'] != 2]
     df = df.drop('categories', axis=1)
     df = pd.concat([df, categories], axis = 1 )
     df = df.drop_duplicates(subset=['id', 'message'])
+    assert len(df[df.duplicated()]) == 0
     return df
 
 def save_data(df, database_filename):
@@ -101,6 +104,7 @@ def main():
               'to as the third argument. \n\nExample: python process_data.py '\
               'disaster_messages.csv disaster_categories.csv '\
               'DisasterResponse.db')
+
 
 if __name__ == '__main__':
     main()
