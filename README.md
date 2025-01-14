@@ -32,6 +32,7 @@ Important Files
 * run.py: This file launches the Flask web app to classify disaster messages.
 
 
+****  ETL and ML details below :*****
 **#ETL**
 
 The required libraries:
