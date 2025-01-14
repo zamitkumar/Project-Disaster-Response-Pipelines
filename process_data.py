@@ -26,8 +26,6 @@ def load_data(messages_filepath, categories_filepath):
 
     return df
 
-
-
 def clean_data(df):
     """Clean dataframe by removing duplicates and converting categories from strings 
     to binary values.
@@ -103,7 +101,6 @@ def main():
               'to as the third argument. \n\nExample: python process_data.py '\
               'disaster_messages.csv disaster_categories.csv '\
               'DisasterResponse.db')
-
 
 if __name__ == '__main__':
     main()
