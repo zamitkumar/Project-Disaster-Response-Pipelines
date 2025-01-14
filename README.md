@@ -105,6 +105,17 @@ A cleaned dataset stored in disaster_response_db.db (SQLite database).
 A trained classification model saved as classifier.pkl.
 A web application for real-time message classification.
 
+Screen Snaps:
+
+![Screenshot 2025-01-13 at 20 30 49](https://github.com/user-attachments/assets/5467aae4-19a7-49e8-b808-af721e1bdd5b)
+
+![Screenshot 2025-01-13 at 20 31 17](https://github.com/user-attachments/assets/481a7f30-91fc-4394-a3bf-604034845caa)
+
+![Screenshot 2025-01-13 at 20 31 28](https://github.com/user-attachments/assets/40ed3eb9-2441-47e7-8916-26d3f1dff61d)
+
+
+
+
 
 
 
