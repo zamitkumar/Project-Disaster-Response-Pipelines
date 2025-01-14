@@ -115,6 +115,13 @@ Screen Snaps:
 
 
 
+Licensing, Authors, and Acknowledgements
+This application was developed as part of the Udacity Data Scientist Nanodegree program.
+
+Licensing: The code and project materials are intended for educational purposes and follow Udacity's licensing guidelines.
+Authors: The project was implemented by Amit Kumar, building on templates provided by Udacity.
+Acknowledgements:
+Udacity for providing the project structure and code templates.
 
 
 
