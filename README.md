@@ -56,8 +56,11 @@ ML Pipeline Preparation Notebook: Covers the Machine Learning pipeline, includin
 Important Files
 
 app/templates/: HTML templates for the web application.
+
 data/process_data.py: Automates data cleaning, feature extraction, and storage in an SQLite database.
+
 models/train_classifier.py: Builds, trains, and exports the classification model as a .pkl file.
+
 run.py: Launches the Flask web application for real-time classification.
 
 **ETL Pipeline Details**
