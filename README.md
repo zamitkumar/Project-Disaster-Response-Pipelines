@@ -1,6 +1,10 @@
+Disaster Response Pipelines 
+
 **Description****
 This project is part of the Data Science Nanodegree Program by Udacity, in collaboration with Figure Eight. T
-he dataset includes pre-labeled tweets and messages from real-life disaster events. The goal of this project is to develop a Natural Language Processing (NLP) model that can categorize messages in real-time.
+he dataset includes pre-labeled tweets and messages from real-life disaster events. 
+The goal of this project is to develop a Natural Language Processing (NLP) model that can categorize messages in real-time.
+
 The project is divided into the following key sections:
 
 1. Data Processing: An ETL pipeline to extract data, clean it, and save it in a SQLite database.
