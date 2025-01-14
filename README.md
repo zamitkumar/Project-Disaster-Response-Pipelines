@@ -116,6 +116,7 @@ A web application for real-time message classification.
 
 
 **Licensing, Authors, and Acknowledgements**
+
 This application was developed as part of the Udacity Data Scientist Nanodegree program.
 
 Licensing: The code and project materials are intended for educational purposes and follow Udacity's licensing guidelines.
