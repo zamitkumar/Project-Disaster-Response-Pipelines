@@ -1,4 +1,4 @@
-Disaster Response Pipelines 
+**Disaster Response Pipelines **
 
 
 Dependencies
@@ -8,7 +8,7 @@ Scikit-learn, NLTK
 Flask
 
 
-Disaster Response Classification Project
+**Disaster Response Classification Project**
 
 Description
 
@@ -60,7 +60,7 @@ data/process_data.py: Automates data cleaning, feature extraction, and storage i
 models/train_classifier.py: Builds, trains, and exports the classification model as a .pkl file.
 run.py: Launches the Flask web application for real-time classification.
 
-ETL Pipeline Details
+**ETL Pipeline Details**
 
 Objective
 Develop an ETL (Extract, Transform, Load) pipeline to process disaster response data, preparing it for analysis and machine learning tasks.
@@ -77,7 +77,7 @@ Store the cleaned dataset in a SQLite database table (DisasterMessages).
 Automation
 Write a script (process_data.py) to automate the ETL process.
 
-ML Pipeline Details
+**ML Pipeline Details**
 
 Objective
 Build and optimize a Machine Learning pipeline to classify disaster response messages into multiple categories.
@@ -99,13 +99,13 @@ Save the trained model as a .pkl file using the pickle library.
 Automation
 Write a script (train_classifier.py) to automate the ML pipeline.
 
-Final Output
+**Final Output**
 
 A cleaned dataset stored in disaster_response_db.db (SQLite database).
 A trained classification model saved as classifier.pkl.
 A web application for real-time message classification.
 
-Screen Snaps:
+**Screen Snaps:**
 
 ![Screenshot 2025-01-13 at 20 30 49](https://github.com/user-attachments/assets/5467aae4-19a7-49e8-b808-af721e1bdd5b)
 
@@ -115,7 +115,7 @@ Screen Snaps:
 
 
 
-Licensing, Authors, and Acknowledgements
+**Licensing, Authors, and Acknowledgements**
 This application was developed as part of the Udacity Data Scientist Nanodegree program.
 
 Licensing: The code and project materials are intended for educational purposes and follow Udacity's licensing guidelines.
