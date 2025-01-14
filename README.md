@@ -1,20 +1,6 @@
 Disaster Response Pipelines 
 
 
-├── app
-│   ├── run.py                 # Flask application
-│   ├── templates/             # HTML templates for the web app
-├── data
-│   ├── disaster_messages.csv  # Dataset containing messages
-│   ├── disaster_categories.csv # Dataset with categories
-│   ├── process_data.py        # Data cleaning and preparation script
-│   ├── DisasterResponse.db    # SQLite database (created by process_data.py)
-├── models
-│   ├── train_classifier.py    # Training script for the machine learning model
-│   ├── classifier.pkl         # Saved machine learning model
-├── README.md                  # Project documentation
-
-
 Dependencies
 Python 3.8+
 Pandas, NumPy, Matplotlib, SQLAlchemy
