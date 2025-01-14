@@ -11,7 +11,6 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
-
 app = Flask(__name__)
 
 def tokenize(text):
@@ -48,7 +47,6 @@ def index():
     if 'message_length' in df.columns:
         df.drop('message_length', axis=1, inplace=True)
     
-        
     # Extract data needed for visuals
     if not df.empty and all(col in df.columns for col in ['related', 'genre', 'message']):
         genre_related = df[df['related'] == 1].groupby('genre').count()['message']
@@ -120,7 +118,6 @@ def index():
             }
         }
         graphs.append(graph3)
-
 
 
     # Encode plotly graphs in JSON
