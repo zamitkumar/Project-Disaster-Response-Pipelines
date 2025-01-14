@@ -1,6 +1,6 @@
 Disaster Response Pipelines 
 
-.
+
 ├── app
 │   ├── run.py                 # Flask application
 │   ├── templates/             # HTML templates for the web app
@@ -13,6 +13,7 @@ Disaster Response Pipelines
 │   ├── train_classifier.py    # Training script for the machine learning model
 │   ├── classifier.pkl         # Saved machine learning model
 ├── README.md                  # Project documentation
+
 
 Dependencies
 Python 3.8+
