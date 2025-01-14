@@ -45,6 +45,10 @@ except FileNotFoundError as e:
 @app.route('/')
 @app.route('/index')
 def index():
+    if 'message_length' in df.columns:
+        df.drop('message_length', axis=1, inplace=True)
+    
+        
     # Extract data needed for visuals
     if not df.empty and all(col in df.columns for col in ['related', 'genre', 'message']):
         genre_related = df[df['related'] == 1].groupby('genre').count()['message']
@@ -75,7 +79,9 @@ def index():
                 'title': 'Distribution of Message Genres and Related Status',
                 'yaxis': {'title': "Count"},
                 'xaxis': {'title': "Genre"},
-                'barmode': 'group'
+                'barmode': 'group',
+                'margin': {'l': 50, 'r': 50, 't': 50, 'b': 50}
+                
             }
         }
         graphs.append(graph1)
@@ -90,6 +96,8 @@ def index():
                 'title': 'Proportion of Messages by Category',
                 'yaxis': {'title': "Proportion"},
                 'xaxis': {'title': "Category", 'tickangle': -45},
+                'margin': {'l': 50, 'r': 50, 't': 50, 'b': 100}, # Adjust spacing around the graph
+            
             }
         }
         graphs.append(graph2)
@@ -107,47 +115,13 @@ def index():
             ],
             'layout': {
                 'title': 'Genre Distribution',
+                'margin': {'l': 50, 'r': 50, 't': 50, 'b': 50},  # Adjust spacing around the graph
+            
             }
         }
         graphs.append(graph3)
 
-    # Graph 4: Top Categories by Message Count
-    if not df.empty:
-        top_categories = df.drop(['id', 'message', 'original', 'genre'], axis=1).sum().sort_values(ascending=False).head(10)
-        graph4 = {
-            'data': [
-                Bar(
-                    x=top_categories.index.tolist(),
-                    y=top_categories.values.tolist(),
-                    orientation='h'
-                )
-            ],
-            'layout': {
-                'title': 'Top 10 Categories by Message Count',
-                'yaxis': {'title': "Category"},
-                'xaxis': {'title': "Message Count"},
-            }
-        }
-        graphs.append(graph4)
 
-    # Graph 5: Message Length Distribution (Histogram)
-    if 'message' in df.columns:
-        df['message_length'] = df['message'].str.len()
-        graph5 = {
-            'data': [
-                {
-                    'type': 'histogram',
-                    'x': df['message_length'],
-                    'nbinsx': 20,
-                }
-            ],
-            'layout': {
-                'title': 'Message Length Distribution',
-                'yaxis': {'title': "Frequency"},
-                'xaxis': {'title': "Message Length"},
-            }
-        }
-        graphs.append(graph5)
 
     # Encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
