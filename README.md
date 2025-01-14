@@ -1,7 +1,7 @@
-****Disaster Response Pipelines ********
+**Disaster Response Pipelines******
 
 
-Dependencies
+Dependencies:
 Python 3.8+
 Pandas, NumPy, Matplotlib, SQLAlchemy
 Scikit-learn, NLTK
