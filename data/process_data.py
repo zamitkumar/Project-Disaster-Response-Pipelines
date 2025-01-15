@@ -48,7 +48,6 @@ def clean_data(df):
         categories[column] = categories[column].astype(str).str[-1].astype(int)
         # convert column from string to numeric
         categories[column] = pd.to_numeric(categories[column])
-    df = df[df['strom'] != 2]
     df = df.drop('categories', axis=1)
     df = pd.concat([df, categories], axis = 1 )
     df = df.drop_duplicates(subset=['id', 'message'])
