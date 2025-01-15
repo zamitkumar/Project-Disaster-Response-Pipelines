@@ -1,19 +1,61 @@
 import json
 import plotly
 import pandas as pd
-
+import numpy as np
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-
+import sys
+from starting_verb_extractor import StartingVerbExtractor
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+from sklearn.base import BaseEstimator, TransformerMixin
+
 
 app = Flask(__name__)
+class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        """
+        No fitting needed for this transformer.
+        """
+        return self
 
+    def transform(self, X):
+        """
+        Extracts whether the first word in the text is a verb or not.
+        """
+        def starting_verb(text):
+            # Check for empty or whitespace-only strings
+            if not text or not text.strip():
+                return 0
+            words = text.split()
+            # Check if the first word is title case
+            if len(words) > 0 and words[0].istitle():
+                return 1
+            return 0
+
+        # Ensure input X is iterable
+        if not isinstance(X, (list, np.ndarray)):
+            X = X.tolist()
+
+        # Apply the starting_verb function to each element in X
+        features = [starting_verb(text) for text in X]
+
+        # Return a 2D NumPy array (scikit-learn requires this format)
+        return np.array(features).reshape(-1, 1)
+    
 def tokenize(text):
+    """
+    Tokenize, normalize, and lemmatize input text.
+
+    Args:
+        text (str): Input text to process.
+
+    Returns:
+        list: Cleaned and lemmatized tokens.
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -44,9 +86,13 @@ except FileNotFoundError as e:
 @app.route('/')
 @app.route('/index')
 def index():
+    """
+    Render the main page with visuals and user input form.
+    """
     if 'message_length' in df.columns:
         df.drop('message_length', axis=1, inplace=True)
     
+        
     # Extract data needed for visuals
     if not df.empty and all(col in df.columns for col in ['related', 'genre', 'message']):
         genre_related = df[df['related'] == 1].groupby('genre').count()['message']
@@ -120,6 +166,7 @@ def index():
         graphs.append(graph3)
 
 
+
     # Encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
@@ -130,6 +177,9 @@ def index():
 # Web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    """
+    Render the results page with classification for user query.
+    """
     # Save user input in query
     query = request.args.get('query', '')
 
@@ -153,6 +203,9 @@ def go():
 
 
 def main():
+    """
+    Run the Flask app.
+    """
     app.run(host='0.0.0.0', port=3000, debug=True)
 
 
