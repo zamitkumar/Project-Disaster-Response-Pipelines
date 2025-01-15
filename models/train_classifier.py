@@ -16,6 +16,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sqlalchemy import create_engine
+
 # Download necessary NLTK data
 nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
 from sklearn.datasets import make_multilabel_classification
@@ -53,7 +54,37 @@ def load_data(database_filepath):
 
     # Return the input features and target labels
     return X, y
+class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        """
+        No fitting needed for this transformer.
+        """
+        return self
 
+    def transform(self, X):
+        """
+        Extracts whether the first word in the text is a verb or not.
+        """
+        def starting_verb(text):
+            # Check for empty or whitespace-only strings
+            if not text or not text.strip():
+                return 0
+            words = text.split()
+            # Check if the first word is title case
+            if len(words) > 0 and words[0].istitle():
+                return 1
+            return 0
+
+        # Ensure input X is iterable
+        if not isinstance(X, (list, np.ndarray)):
+            X = X.tolist()
+
+        # Apply the starting_verb function to each element in X
+        features = [starting_verb(text) for text in X]
+
+        # Return a 2D NumPy array (scikit-learn requires this format)
+        return np.array(features).reshape(-1, 1)
+        
 def tokenize(texts):
     """
     Tokenizes and processes a given text string by removing non-alphanumeric characters, 
@@ -108,23 +139,34 @@ def build_model():
     """
     
     # Define the pipeline steps
+    # Define the pipeline
     pipeline = Pipeline([
-        ('vectorizer', CountVectorizer(tokenizer=tokenize)),  # Text vectorization step
-        ('tfidf_transformer', TfidfTransformer()),            # TF-IDF transformation step
-        ('classifier', MultiOutputClassifier(RandomForestClassifier()))  # Multi-output random forest classifier
+        ('features', FeatureUnion([
+            ('text_pipeline', Pipeline([
+                ('vectorizer', CountVectorizer(tokenizer=tokenize)),
+                ('tfidf_transformer', TfidfTransformer())
+            ])),
+            ('starting_verb', StartingVerbExtractor())
+        ])),
+        ('classifier', MultiOutputClassifier(RandomForestClassifier()))
     ])
-    
+
     # Specify parameters for grid search
     parameters = {
-        'vectorizer__ngram_range': [(1, 1)],  # Use unigrams for tokenization
-        'classifier__estimator__n_estimators': [50],  # Number of trees in the random forest classifier
-        'classifier__estimator__min_samples_split': [2]  # Minimum samples required to split a node in the trees
-    }
+            'features__text_pipeline__vectorizer__ngram_range': [(1, 1)],
+            'classifier__estimator__n_estimators': [50],
+            'classifier__estimator__min_samples_split': [2]
+        }
     
-    # Create grid search object for hyperparameter tuning
-    gcv = GridSearchCV(estimator=pipeline, param_grid=parameters, cv=3, verbose=3, n_jobs=-1)
+    # Create and return the grid search object
+    gcv = GridSearchCV(
+        estimator=pipeline,
+        param_grid=parameters,
+        cv=3,
+        verbose=3,
+        n_jobs=-1
+    )
     
-    # Return the grid search object
     return gcv
    
 def train_pipeline(X, y):
